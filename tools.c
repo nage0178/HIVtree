@@ -32,6 +32,7 @@ static time_t time_start;
 double PjumpOptimum = 0.30; /* this is the optimum for the Bactrian move. */
 unsigned int z_rndu = 666, w_rndu = 1237;
 
+seqTypes SeqType;
 int splitline(char line[], int nfields, int fields[])
 {
 /* This finds out how many fields there are in the line, and marks the starting positions of the fields.

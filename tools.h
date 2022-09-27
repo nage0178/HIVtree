@@ -55,8 +55,8 @@ int ResetStepLengths(FILE *fout, double Pjump[], double finetune[], int nsteps);
 #define pamlVerStr "paml version 4.9j, February 2020"
 #define QuantileGamma(prob,alpha,beta) QuantileChi2(prob,2.0*(alpha))/(2.0*(beta))
 
-enum {PrBranch=1, PrNodeNum=2, PrLabel=4, PrNodeStr=8, PrAge=16, PrOmega=32} OutTreeOptions;
-enum {BASEseq=0, CODONseq, AAseq, CODON2AAseq, BINARYseq, BASE5seq} SeqTypes;
+typedef enum {PrBranch=1, PrNodeNum=2, PrLabel=4, PrNodeStr=8, PrAge=16, PrOmega=32} outTreeOptions;
+typedef enum {BASEseq=0, CODONseq, AAseq, CODON2AAseq, BINARYseq, BASE5seq} seqTypes;
 
 void starttimer(void);
 int xtoy (double x[], double y[], int n);
