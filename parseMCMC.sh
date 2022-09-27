@@ -13,6 +13,28 @@ numFiles=$(head -1 ${file}| sed 's/,/ /g'| wc -w)
 # Number of latent sequences plus the header
 numLines=$(wc -l $file | awk '{print $1}')
 
+for ((i=1;i<=numFiles;i++))
+do
+	name=$(head -1 ${file}|awk -F "," -v col=$i '{printf $col}')
+	outfile=${name}/output
+
+	echo $outfile
+	grep "Date range" ${outfile} | awk '{print $3 $10}' >> dateRange
+done
+
+tipDateCheck=$(sort dateRange | uniq |wc| awk '{print $1}')
+
+if [[ $tipDateCheck != 1 ]] 
+then
+
+	echo All runs of HIVLateTree must be run with the same tipDate time unit and have the same last sample date. 
+	echo This information can be checked on the line starting with "Date range" in the output to screen of the MCMC. 
+	echo See the manual for more information
+fi
+
+rm dateRange
+
+exit 
 # For each row in the csv file
 for ((line=2;line<=numLines;line++));
 do
