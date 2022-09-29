@@ -18,7 +18,6 @@ do
 	name=$(head -1 ${file}|awk -F "," -v col=$i '{printf $col}')
 	outfile=${name}/output
 
-	echo $outfile
 	grep "Date range" ${outfile} | awk '{print $3 $10}' >> dateRange
 done
 
@@ -27,14 +26,19 @@ tipDateCheck=$(sort dateRange | uniq |wc| awk '{print $1}')
 if [[ $tipDateCheck != 1 ]] 
 then
 
-	echo All runs of HIVLateTree must be run with the same tipDate time unit and have the same last sample date. 
+	echo All runs of HIVtree must be run with the same tipDate time unit and have the same last sample date. 
 	echo This information can be checked on the line starting with "Date range" in the output to screen of the MCMC. 
 	echo See the manual for more information
+else 
+
+	time=$(head -1 dateRange | awk -F , '{print $2}')
+	lastSample=$(head -1 dateRange | awk -F , '{print $1}' | sed 's/(//g')
+	echo The tipDate time unit is ${time} 
+	echo The time of the last sample is ${lastSample}.
 fi
 
 rm dateRange
 
-exit 
 # For each row in the csv file
 for ((line=2;line<=numLines;line++));
 do
