@@ -2875,6 +2875,7 @@ int UpdateTimesLatent (double *lnL, double steplength[], char accept[])
         ynew = y + e*rndSymmetrical();
         ynew = reflect(ynew, yb[0], yb[1]);
 
+
         stree.nodes[is].age = tnew = exp(ynew);
 
         if (debug == 2) printf("\nnode %2d age %9.6f %9.6f", is + 1, t, tnew);
@@ -3912,7 +3913,15 @@ int mixingTipDate(double *lnL, double steplength, char *accept)
    }
    lnacceptance = lnc = steplength*rndSymmetrical();
    c = exp(lnc);
+
+   if (minages[0] + (stree.nodes[stree.root].age - minages[0]) * c<= minages[0]) {
+	free(minages); 
+	return;
+   }
+
    stree.nodes[stree.root].age = minages[0] + (stree.nodes[stree.root].age - minages[0]) * c;
+
+
    for (j = s; j < s*2-1; j++) {
       if (j == stree.root) continue;
       jj = j - s;
