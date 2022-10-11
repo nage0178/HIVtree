@@ -43,6 +43,7 @@ rm dateRange
 for ((line=2;line<=numLines;line++));
 do
 
+	echo Processing row $line in the csv file.
 	# Name the output file based on the first sequence name in a row
 
 	#seq1=$(tail -n+$line $file |head -1 |awk -F "," -v col=1 '{printf $col}')

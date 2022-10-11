@@ -1,9 +1,12 @@
 #!/bin/bash
 # Data is originally from Abrahams et al. 2019
 
-../.././parseMCMC.sh sequences257Short.txt
+echo Parsing MCMCs and preparing files to combine estimates.
+../.././parseMCMC.sh sequences257.csv
 
+echo 
+echo Combining estimates across regions
 # Example of how to run one of the output files
-Rscript ../../combineEstimates.R CAP257_ENV_C1C2_W9_QVOA_1_3921.txt 0 3.921 1000 3921 2
+Rscript ../../combineEstimates.R C1C2_W19_P1_QVOA_3921.txt 0 3.921 1000 3921 2
 
 wait;

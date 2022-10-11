@@ -1,19 +1,19 @@
 #!/bin/bash
 # Data is originally from Abrahams et al. 2019
 
-mkdir 257_ENV2_d10_0.75Prior_1 257_ENV2_d10_0.75_1 257_ENV3_d10_0.75Prior_1 257_ENV3_d10_0.75_1
+mkdir ENV2_Prior ENV2 ENV3_Prior ENV3
 
-cd 257_ENV2_d10_0.75Prior_1
-../../.././HIVtree ../257_ENV2_d10_0.75Prior_1.ctl &> output & 
+echo Running HIVtree. The MCMCs may take a few minutes to run.
+cd ENV2_Prior
+../../.././HIVtree ../ENV2_Prior.ctl &> output & 
 
+cd ../ENV3_Prior
+../../.././HIVtree ../ENV3_Prior.ctl &> output & 
 
-cd ../257_ENV3_d10_0.75Prior_1
-../../.././HIVtree ../257_ENV3_d10_0.75Prior_1.ctl &> output & 
+cd ../ENV2
+../../.././HIVtree ../ENV2.ctl &> output & 
 
-cd ../257_ENV2_d10_0.75_1
-../../.././HIVtree ../257_ENV2_d10_0.75_1.ctl &> output & 
-
-cd ../257_ENV3_d10_0.75_1
-../../.././HIVtree ../257_ENV3_d10_0.75_1.ctl &> output & 
+cd ../ENV3
+../../.././HIVtree ../ENV3.ctl &> output & 
 
 wait;
