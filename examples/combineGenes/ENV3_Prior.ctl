@@ -1,6 +1,6 @@
 seed = 49
 
-seqfile = ../257_ENV3prior.fa 
+seqfile = ../ENV3prior.fa 
 treefile = ../ENV3prior_mcmc.txt
 mcmcfile = mcmc.txt
 outfile = out.txt
