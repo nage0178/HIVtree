@@ -3916,7 +3916,7 @@ int mixingTipDate(double *lnL, double steplength, char *accept)
 
    if (minages[0] + (stree.nodes[stree.root].age - minages[0]) * c<= minages[0]) {
 	free(minages); 
-	return;
+	return (0);
    }
 
    stree.nodes[stree.root].age = minages[0] + (stree.nodes[stree.root].age - minages[0]) * c;
