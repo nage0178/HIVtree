@@ -49,22 +49,14 @@ do
 	#seq1=$(tail -n+$line $file |head -1 |awk -F "," -v col=1 '{printf $col}')
 	lineText=$(tail -n+$line $file |head -1)
 
-	# The first sequence is not missing
-	pat='^([^,]+),(.*\b)'
 
-	# The first sequence is missing
-	pat1='(,+)([^,]+)(,?)(.*\b)'
+	seq1=$(echo $lineText| awk -F, '{ for(j = 1; j <= NF; j++) { if($j !~ /^\s*\t*$/) { print $j; break } } }')
 
-	# Finds the name of the first sequence in a row
-	if [[ "$lineText" =~ $pat ]]; then
-    		seq1=${BASH_REMATCH[1]}
 
-	elif [[ "$lineText" =~ $pat1 ]]; then
-    		seq1=${BASH_REMATCH[2]}
-	else
-
+	if [ -z "$seq1" ] 
+	then
 		echo Check file format. The file should be in csv format. Problem in row 
-		echo $lineText
+		echo $lineText . There cannot be blank rows.
 		echo Exiting. 
 		exit
 	fi 
