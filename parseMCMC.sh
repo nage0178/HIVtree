@@ -120,7 +120,11 @@ do
 		# If this is the first column, remove the "," from the file
 		if [ $i == 1 ]
 		then
-			sed -i 's/^,//g' out 
+			if [[ "$OSTYPE" == "darwin"* ]]; then
+				sed -i '' -e  's/^,//g' out 
+			else
+				sed -i 's/^,//g' out 
+			fi
 		fi
 
 		mv out ${seq1}.txt

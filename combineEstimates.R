@@ -1,7 +1,6 @@
 library(kdensity)
 library(GoFKernel)
 
-inFile <- "~/HIVtree/examples/CAP257_ENV_C2C3_W2_P2_QVOA_1_3921.txt"
 args = commandArgs(trailingOnly = TRUE)
 if(length(args) != 6) {
   stop("Incorrect number of arguments")
