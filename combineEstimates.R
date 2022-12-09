@@ -1,26 +1,76 @@
 library(kdensity)
 library(GoFKernel)
+library(getopt)
 
-args = commandArgs(trailingOnly = TRUE)
-if(length(args) != 6) {
-  stop("Incorrect number of arguments")
+
+spec = matrix(c(
+  "mcmcSummary" , "m", 1, "character",
+  "sampleTime"  , "s", 1, "double",
+  "latentBound" , "b", 1, "double",
+  "timeUnit"    , "t", 1, "double",
+  "lastSample"  , "l", 1, "double",
+  "genes"     , "g", 1, "integer"
+), byrow=TRUE, ncol=4)
+
+opt = getopt(spec);
+if (is.null(opt$mcmcSummary)) {
+  stop("MCMC summary file is not provided. Exiting")
 } else {
-  
-  # MCMC file
-  inFile <- args[1]
-  
-  # Integration bounds
-  lowerInt <- as.numeric(args[2])
-  upperInt <- as.numeric(args[3])
-
-  # Used to convert to calendar time, HIVtree reports in backwards time
-  # with a different time scale
-  timeUnit <- as.numeric(args[4])
-  timeZero <- as.numeric(args[5])
-  
-  # Number of genes in the input file
-  numGenes <- as.numeric(args[6])
+  inFile <- opt$mcmcSummary
 }
+
+if (is.null(opt$sampleTime)) {
+  stop("The sample time is not provided. Exiting")
+} else {
+  lowerInt  <- opt$sampleTime
+}
+
+if (is.null(opt$latentBound)) {
+  stop("The latent bound is not provided. Exiting")
+} else {
+  upperInt  <- opt$latentBound
+}
+
+if (is.null(opt$timeUnit)) {
+  stop("The time unit is not provided. Exiting")
+} else {
+  timeUnit  <- opt$timeUnit
+}
+
+
+if (is.null(opt$lastSample)) {
+  stop("The time of the last sample is not provided. Exiting")
+} else {
+  timeZero  <- opt$lastSample
+}
+
+
+if (is.null(opt$genes)) {
+  stop("The number of genes is not provided. Exiting")
+} else {
+  numGenes  <- opt$genes
+}
+
+# args = commandArgs(trailingOnly = TRUE)
+# if(length(args) != 6) {
+#   stop("Incorrect number of arguments")
+# } else {
+#   
+#   # MCMC file
+#   inFile <- args[1]
+#   
+#   # Integration bounds
+#   lowerInt <- as.numeric(args[2])
+#   upperInt <- as.numeric(args[3])
+# 
+#   # Used to convert to calendar time, HIVtree reports in backwards time
+#   # with a different time scale
+#   timeUnit <- as.numeric(args[4])
+#   timeZero <- as.numeric(args[5])
+#   
+#   # Number of genes in the input file
+#   numGenes <- as.numeric(args[6])
+# }
 
 times<- read.csv(inFile)
 

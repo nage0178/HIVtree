@@ -7,6 +7,6 @@ echo Parsing MCMCs and preparing files to combine estimates.
 echo 
 echo Combining estimates across regions
 # Example of how to run one of the output files
-Rscript ../../combineEstimates.R C1C2_W19_QVOA_3921.txt 0 3.921 1000 3921 2
+Rscript ../../combineEstimates.R -m C1C2_W19_QVOA_3921.txt -s 0 -b 3.921 -t 1000 -l 3921 -g 2
 
 wait;
