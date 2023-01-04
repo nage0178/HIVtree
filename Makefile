@@ -1,6 +1,6 @@
 CC = gcc # cc, gcc, cl
 
-CFLAGS = -g
+CFLAGS = -g -w
 #CFLAGS = -fast
 
 LIBS = -lm # -lM
