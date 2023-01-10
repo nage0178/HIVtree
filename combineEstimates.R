@@ -75,7 +75,7 @@ if (is.null(opt$genes)) {
 times<- read.csv(inFile)
 
 if ((dim(times)[2] / 2) != numGenes) {
-  error("The number of genes reported does not match the number of columns in the input file. There should be twice as many columns at genes, one column for the posterior and one for the prior of each gene.")
+  stop("The number of genes reported does not match the number of columns in the input file. There should be twice as many columns at genes, one column for the posterior and one for the prior of each gene.")
 }
 
 maxGenes <- 10 
@@ -84,7 +84,7 @@ prior <- data.frame(nrow = maxGenes)
 
 # Give error message if too many genes
 if (numGenes > 10) {
-  error("Too many sequences. There must be 10 or fewer genes.")
+  stop("Too many sequences. There must be 10 or fewer genes.")
 }
 
 # Calculates a KDE for the priors and posteriors 

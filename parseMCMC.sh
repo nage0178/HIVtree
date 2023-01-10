@@ -61,6 +61,7 @@ do
 		exit
 	fi 
 
+	rm -f ${seq1}.txt
 	touch ${seq1}.txt
 
 	# For each column in the row

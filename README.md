@@ -33,4 +33,5 @@ A recent version of R must be installed with the following packages which are ne
 ```
 kdensity
 GoFKernel
+getopt
 ```
