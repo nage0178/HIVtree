@@ -149,6 +149,12 @@ char *Btransform[] = { "", "square root", "logarithm", "arcsin" };
 
 int main(int argc, char *argv[])
 {
+   if (argc != 2) {
+	   printf("Usage: HIVtree controlFile\n");
+	   printf("HIVtree must have exactly one argument, the name of the control file.\n"); 
+	   printf("For further instruction, see the documentation directory or visit the github at https://github.com/nage0178/HIVtree\n"); 
+	   exit(1);
+   }
    char ctlf[2048] = "mcmctree.ctl";
    int i, j, k = 4;
    FILE  *fout;
@@ -173,7 +179,7 @@ int main(int argc, char *argv[])
    com.alpha = 0.;     com.ncatG = 1;
    com.ncode = 4;      com.clock = 1;
 
-   printf("MCMCTREE in %s\n", pamlVerStr);
+   printf("%s\n", pamlVerStr);
    if (argc > 2 && !strcmp(argv[argc - 1], "--stdout-no-buf"))
       setvbuf(stdout, NULL, _IONBF, 0);
    if (argc > 1)
@@ -187,7 +193,7 @@ int main(int argc, char *argv[])
    GetOptions(ctlf);
 
    fout = gfopen(com.outf, "w");
-   fprintf(fout, "MCMCTREE (%s) %s\n", pamlVerStr, com.seqf);
+   fprintf(fout, "HIVtree (%s) %s\n", pamlVerStr, com.seqf);
 
    ReadTreeSeqs(fout);
 

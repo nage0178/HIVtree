@@ -52,7 +52,7 @@ int ResetStepLengths(FILE *fout, double Pjump[], double finetune[], int nsteps);
 #define square(a) ((a)*(a))
 #define Pi  3.1415926535897932384626433832795
 #define F0 stdout
-#define pamlVerStr "paml version 4.9j, February 2020"
+#define pamlVerStr "HIVtree, January 2023"
 #define QuantileGamma(prob,alpha,beta) QuantileChi2(prob,2.0*(alpha))/(2.0*(beta))
 
 typedef enum {PrBranch=1, PrNodeNum=2, PrLabel=4, PrNodeStr=8, PrAge=16, PrOmega=32} outTreeOptions;
