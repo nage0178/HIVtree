@@ -1505,7 +1505,7 @@ int GetInitialsTimes(void)
          tmin[tip] = stree.nodes[tip].latentAge;
          stree.nodes[tip].age = tmin[tip] + (tmax[tip] - tmin[tip])*rndu();
 
-	 if (stree.nodes[tip].age > com.latentBoundDate) {
+	 if (com.latentBoundDate && stree.nodes[tip].age > com.latentBoundDate) {
 		 stree.nodes[tip].age = (com.latentBoundDate + stree.nodes[tip].latentAge) / 2; 
 	 }
 
