@@ -40,7 +40,7 @@ struct CommonInfo {
    int cleandata, ndata;
    int model, clock, fix_kappa, fix_alpha, fix_rgene, Mgene;
    int method, icode, codonf, aaDist, NSsites;
-   int latentData, latentBound;
+   int latentData, latentBound, priorRat;
    double *fpatt, kappa, alpha, TipDate, TipDate_TimeUnit, tipDateOld;
    double latentBoundDate;
    double rgene[NGENE], piG[NGENE][NCODE];  /* not used */
@@ -1096,14 +1096,14 @@ int GenerateBlengthGH(char infile[])
 int GetOptions(char *ctlf)
 {
    int  transform0 = ARCSIN_B; /* default transform: SQRT_B, LOG_B, ARCSIN_B */
-   int  iopt, i, j, nopt = 34, lline = 4096;
-   char line[4096], *pline, opt[34], *comment = "*#";
+   int  iopt, i, j, nopt = 35, lline = 4096;
+   char line[4096], *pline, opt[35], *comment = "*#";
    char *optstr[] = { "seed", "seqfile","treefile", "outfile", "mcmcfile", "checkpoint", "BayesFactorBeta",
         "seqtype", "aaRatefile", "icode", "noisy", "usedata", "ndata", "duplication", "model", "clock",
         "TipDate", "RootAge", "fossilerror", "alpha", "ncatG", "cleandata",
         "BDparas", "kappa_gamma", "alpha_gamma",
         "rgene_gamma", "sigma2_gamma", "print", "burnin", "sampfreq",
-        "nsample", "finetune", "latentFile", "latentBound"};
+        "nsample", "finetune", "latentFile", "latentBound", "priorRatio"};
    double t = 1, *eps = mcmc.steplength;
    FILE  *fctl = gfopen(ctlf, "r");
 
@@ -1111,6 +1111,7 @@ int GetOptions(char *ctlf)
    data.transform = transform0;
    com.latentData = 0;
    com.latentBound = 0; 
+   com.priorRat = 0;
    strcpy(com.checkpointf, "mcmctree.ckpt");
    if (fctl) {
       if (noisy) printf("\nReading options from %s..\n", ctlf);
@@ -1214,6 +1215,7 @@ int GetOptions(char *ctlf)
                      break;
                   case (32): sscanf(pline + 1, "%s", com.latentf); com.latentData = 1; break;
 		  case (33): sscanf(pline + 1, "%lf", &com.latentBoundDate); com.latentBound = 1; break;
+                  case (34): com.priorRat = (int)t; break;
                   }
                   break;
                }
@@ -2884,6 +2886,7 @@ int UpdateTimesLatent (double *lnL, double steplength[], char accept[])
 
         stree.nodes[is].age = tnew = exp(ynew);
 
+
         if (debug == 2) printf("\nnode %2d age %9.6f %9.6f", is + 1, t, tnew);
 
         for (j = 0; j < nmirror; j++)  /* copy new age to mirror nodes */
@@ -2891,6 +2894,16 @@ int UpdateTimesLatent (double *lnL, double steplength[], char accept[])
 
         lnacceptance = ynew - y;
 
+	if (com.priorRat) {
+      		if (is == stree.nspecies) {
+	      		int countLatent = 0;
+   			for (int i = 0; i < stree.nspecies; i++) {
+	      			if (stree.nodes[i].latent) 
+		      			countLatent++;
+			}
+			lnacceptance += (stree.nspecies - 2 + countLatent) * (log(t)- log(tnew));
+      		}
+      }
 
       lnpTnew = lnpriorTimes();
 
@@ -3925,6 +3938,7 @@ int mixingTipDate(double *lnL, double steplength, char *accept)
 	return (0);
    }
 
+   double rootAgeOld = stree.nodes[stree.root].age ;
    stree.nodes[stree.root].age = minages[0] + (stree.nodes[stree.root].age - minages[0]) * c;
 
 
@@ -3938,6 +3952,16 @@ int mixingTipDate(double *lnL, double steplength, char *accept)
 
    lnpTnew = lnpriorTimes();
    lnacceptance += lnpTnew - data.lnpT;
+   
+
+	if (com.priorRat) {
+	      	int countLatent = 0;
+   		for (int i = 0; i < stree.nspecies; i++) {
+	      		if (stree.nodes[i].latent) 
+				countLatent++;
+		}
+		lnacceptance += (stree.nspecies - 2 + countLatent) * (rootAgeOld)- log(log(stree.nodes[stree.root].age));
+      }
 
    /* dividing locus rates by c.  */
    if (changemu) {
